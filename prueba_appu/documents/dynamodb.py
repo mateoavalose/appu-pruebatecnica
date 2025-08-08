@@ -25,8 +25,8 @@ def get_document_by_id(document_id: str) -> dict:
     except ClientError as e:
         raise e
 
-def get_documents_by_name(name: str) -> list:
-    try:    
+def get_documents_by_name(name: str) -> list[dict]:
+    try:
         response = table.query(
             IndexName='file_name-index',
             KeyConditionExpression=boto3.dynamodb.conditions.Key('file_name').eq(name)

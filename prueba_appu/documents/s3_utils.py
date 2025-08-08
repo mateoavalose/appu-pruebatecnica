@@ -11,13 +11,14 @@ s3 = boto3.client(
 
 def upload_file(file, file_name) -> str:
     timeStamp = datetime.now().strftime("%Y%m%d%H%M%S")
+    s3_key = f'facturas/{file_name}_{timeStamp}'
     try:
         s3.upload_fileobj(
             file,
             settings.BUCKET_NAME,
-            f"{timeStamp}_{file_name}",
+            s3_key,
             ExtraArgs={'ACL': 'public-read'}
         )
-        return f"{settings.AWS_S3_CUSTOM_DOMAIN}/{timeStamp}_{file_name}"
+        return f'https://{settings.AWS_S3_CUSTOM_DOMAIN}/{s3_key}'
     except Exception as e:
         raise e
